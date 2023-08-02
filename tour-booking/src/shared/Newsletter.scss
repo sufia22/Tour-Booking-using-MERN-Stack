@@ -1,0 +1,52 @@
+.newsletter {
+  background: #cae5f4;
+  padding: 0px;
+  margin-top: 3rem;
+
+  .newsletter-content {
+    padding: 50px 0px;
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .newsletter-input {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      padding: 0.5rem;
+      margin-bottom: 2rem;
+      border-radius: 5px;
+
+      input {
+        border: none;
+        font-size: 1rem;
+        color: var(--heading-color);
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      button {
+        padding: 0.5rem 1.5rem !important;
+        background: var(--secondary-color) !important;
+        color: #fff !important;
+        font-size: 1.1rem !important;
+      }
+    }
+
+    p {
+      color: var(--heading-color) !important;
+      font-size: 1.1rem !important;
+    }
+  }
+
+  .newsletter-img {
+    img {
+      width: 100%;
+    }
+  }
+}
