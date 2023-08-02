@@ -1,1 +1,2 @@
-tour-booking/node_modules
+tour-booking/node_modules/*
+package-lock.json
