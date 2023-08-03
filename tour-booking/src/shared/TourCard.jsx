@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./TourCard.scss";
 
 const TourCard = ({ tour }) => {
-  const { id, title, city, photo, price, featured, reviews } = tour;
+  const { _id, title, city, photo, price, featured, reviews } = tour;
 
   const totalRating = reviews?.reduce((acc, item) => acc + item.rating, 0);
   const avgRating =
@@ -39,7 +39,7 @@ const TourCard = ({ tour }) => {
           </div>
 
           <h5 className="tour-title">
-            <Link to={`/tours/${id}`}>{title}</Link>
+            <Link to={`/tour/${_id}`}>{title}</Link>
           </h5>
 
           <div className="card-bottom mt-3 d-flex align-items-center justify-content-between">
@@ -47,7 +47,7 @@ const TourCard = ({ tour }) => {
               ${price} <span> /per person</span>
             </h5>
             <button className="btn booking-btn">
-              <Link to={`/tours/${id}`}>Book Now</Link>
+              <Link to={`/tour/${_id}`}>Book Now</Link>
             </button>
           </div>
         </CardBody>

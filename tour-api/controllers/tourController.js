@@ -9,12 +9,9 @@ import asyncHandler from "express-async-handler";
  */
 export const getAllTours = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page);
-  const tours = await Tour.find()
-    .populate("reviews")
-    .skip(page * 8)
-    .limit(8);
+  const tours = await Tour.find().populate("reviews");
 
-  if (tours.length > 0) {
+  if (tours) {
     res.status(200).json({
       tours,
       message: "Get all tours successfully",
@@ -225,8 +222,14 @@ export const getFeaturedTours = asyncHandler(async (req, res) => {
 export const getTourCount = asyncHandler(async (req, res) => {
   const tourCount = await Tour.estimatedDocumentCount();
 
-  res.status(200).json({
-    tours: tourCount,
-    message: "Successfull",
-  });
+  if (tourCount) {
+    res.status(200).json({
+      tours: tourCount,
+      message: "Successfull",
+    });
+  } else {
+    res.status(404).json({
+      message: "failed to fetch",
+    });
+  }
 });

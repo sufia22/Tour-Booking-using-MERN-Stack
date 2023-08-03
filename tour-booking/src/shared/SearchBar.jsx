@@ -1,14 +1,19 @@
 import { Col, Form, FormGroup } from "reactstrap";
 import "./SearchBar.scss";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../utils/config";
+import { sweetAlertBasic } from "../helpers/sweetAlert";
 
 const SearchBar = () => {
   const locationRef = useRef("");
   const distanceRef = useRef(0);
   const maxGroupSizeRef = useRef(0);
+  const navigate = useNavigate();
 
   // search handler
-  const searchHandler = () => {
+  const searchHandler = async () => {
     const location = locationRef.current.value;
     const distance = distanceRef.current.value;
     const maxGroupSize = maxGroupSizeRef.current.value;
@@ -16,6 +21,23 @@ const SearchBar = () => {
     if (!location || !distance || !maxGroupSize) {
       return alert("All fields are required !");
     }
+
+    await axios
+      .get(
+        `${BASE_URL}/tour/search/getTourBySearch?city=${location}&distance=${distance}&maxGroupSize=${maxGroupSize}`
+      )
+      .then((res) => {
+        navigate(
+          `/tour/search/getTourBySearch?city=${location}&distance=${distance}&maxGroupSize=${maxGroupSize}`,
+          {
+            state: res.data,
+          }
+        );
+      })
+      .catch((err) => {
+        console.log(err.message);
+        sweetAlertBasic("Something went wrong");
+      });
   };
 
   return (
