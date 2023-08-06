@@ -16,10 +16,6 @@
   box-sizing: border-box;
 }
 
-.container {
-  max-width: 1250px !important;
-}
-
 body {
   font-family: var(--font-name);
 }
