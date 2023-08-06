@@ -1,7 +1,8 @@
 import "./Header.scss";
 import logo from "../../assets/images/logo.png";
-import { Link, NavLink } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useRef } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const nav__links = [
   {
@@ -20,6 +21,14 @@ const nav__links = [
 
 const Header = () => {
   const headerRef = useRef(null);
+  const menuRef = useRef(null);
+  const navigate = useNavigate();
+  const { user, dispatch } = useContext(AuthContext);
+
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
+  };
 
   const stickyHeaderFunc = () => {
     window.addEventListener("scroll", () => {
@@ -40,6 +49,7 @@ const Header = () => {
     return window.removeEventListener("scroll", stickyHeaderFunc);
   });
 
+  const toggleMenu = () => menuRef.current.classList.toggle("show-menu");
   return (
     <>
       <div className="header" ref={headerRef}>
@@ -48,13 +58,15 @@ const Header = () => {
             <div className="nav_wrapper d-flex align-items-center justify-content-between">
               {/* -------- logo start -------- */}
               <div className="logo">
-                <img src={logo} alt="" />
+                <Link to={"/"}>
+                  <img src={logo} alt="" />
+                </Link>
               </div>
               {/* -------- logo end -------- */}
 
               {/* -------- menu start -------- */}
-              <div className="navigation ">
-                <ul>
+              <div className="navigation" ref={menuRef} onClick={toggleMenu}>
+                <ul className="menu">
                   {nav__links.map((item, index) => {
                     return (
                       <li className="nav__item" key={index}>
@@ -75,15 +87,30 @@ const Header = () => {
 
               {/* -------- nav right start -------- */}
               <div className="nav__right">
-                <div className="nav__btns">
-                  <button className="btn secondary__btn">
-                    <Link to={"/login"}>Login</Link>
-                  </button>
-                  <button className="btn primary__btn">
-                    <Link to={"/register"}>Register</Link>
-                  </button>
+                <div className="nav__btns d-flex">
+                  {user ? (
+                    <>
+                      <div className="user-box">
+                        <h5 className="mb-0">{user.user.username}</h5>
+                        <button className="btn btn-dark" onClick={logout}>
+                          Logout
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <button className="btn secondary__btn">
+                        <Link to={"/login"}>Login</Link>
+                      </button>
+                      <button className="btn primary__btn">
+                        <Link to={"/register"}>Register</Link>
+                      </button>
+                    </>
+                  )}
                 </div>
-                <span className="mobile__menu">
+
+                {/* mobile menu */}
+                <span className="mobile__menu" onClick={toggleMenu}>
                   <i className="ri-menu-line"></i>
                 </span>
               </div>

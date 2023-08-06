@@ -50,3 +50,28 @@
     }
   }
 }
+
+// responsive
+@media only screen and (max-width: 992px) {
+  .newsletter-content h2 {
+    font-size: 2rem !important;
+  }
+
+  .newsletter-img {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .newsletter-content h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .newsletter-content p {
+    display: none;
+  }
+
+  .newsletter-img {
+    display: none;
+  }
+}

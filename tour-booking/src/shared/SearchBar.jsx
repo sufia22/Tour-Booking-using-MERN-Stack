@@ -1,10 +1,10 @@
 import { Col, Form, FormGroup } from "reactstrap";
 import "./SearchBar.scss";
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/config";
-import { sweetAlertBasic } from "../helpers/sweetAlert";
+import SearchResultList from "../pages/SearchResultList";
 
 const SearchBar = () => {
   const locationRef = useRef("");
@@ -29,14 +29,12 @@ const SearchBar = () => {
       .then((res) => {
         navigate(
           `/tour/search/getTourBySearch?city=${location}&distance=${distance}&maxGroupSize=${maxGroupSize}`,
-          {
-            state: res.data,
-          }
+          { state: res.data }
         );
       })
       .catch((err) => {
         console.log(err.message);
-        sweetAlertBasic("Something went wrong");
+        alert("Something went wrong");
       });
   };
 
@@ -66,7 +64,7 @@ const SearchBar = () => {
               <div>
                 <h6>Distance</h6>
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Distance k/m"
                   ref={distanceRef}
                 />
@@ -79,7 +77,7 @@ const SearchBar = () => {
               </span>
               <div>
                 <h6>Max People</h6>
-                <input type="number" placeholder="0" ref={maxGroupSizeRef} />
+                <input type="text" placeholder="0" ref={maxGroupSizeRef} />
               </div>
             </FormGroup>
 

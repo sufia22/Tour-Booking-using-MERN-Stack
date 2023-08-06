@@ -1,15 +1,21 @@
 import { Button, Form, FormGroup, ListGroup, ListGroupItem } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import "./Booking.scss";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import swal from "sweetalert";
+import { BASE_URL } from "../../utils/config";
+import axios from "axios";
 
 const Booking = ({ tour, avgRating }) => {
-  const { price, reviews } = tour;
+  const { price, reviews, title } = tour.tour;
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
-  const [credentials, setCredentials] = useState({
-    userID: "01",
-    userEmail: "example@gmail.com",
+  const [booking, setBooking] = useState({
+    userID: user?.user?._id,
+    userEmail: user?.user?.email,
+    tourName: title,
     fullName: "",
     phone: "",
     guestSize: 1,
@@ -17,8 +23,8 @@ const Booking = ({ tour, avgRating }) => {
   });
 
   // handle input change
-  const handleChange = (e) => {
-    setCredentials((prevState) => ({
+  const handleChange = async (e) => {
+    setBooking((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
@@ -26,12 +32,30 @@ const Booking = ({ tour, avgRating }) => {
 
   const serviceFee = 10;
   const totalAmount =
-    Number(price) * Number(credentials.guestSize) + Number(serviceFee);
+    Number(price) * Number(booking.guestSize) + Number(serviceFee);
 
   // handle submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/thank-you");
+
+    console.log(booking);
+
+    try {
+      if (!user || user === undefined || user === null) {
+        swal("Please sign in");
+      }
+
+      await axios
+        .post(`${BASE_URL}/booking`, booking)
+        .then((res) => {
+          navigate("/thank-you");
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (

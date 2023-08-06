@@ -129,3 +129,19 @@
     }
   }
 }
+
+// responsive
+@media only screen and (max-width: 768px) {
+  .tour-extra-details {
+    flex-wrap: wrap !important;
+    row-gap: 1rem;
+
+    span {
+      font-size: 0.9rem !important;
+
+      i {
+        font-size: 1rem !important;
+      }
+    }
+  }
+}

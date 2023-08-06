@@ -8,16 +8,16 @@ import asyncHandler from "express-async-handler";
  * @access public
  */
 export const getAllUsers = asyncHandler(async (req, res) => {
-  const Users = await User.find();
+  const users = await User.find();
 
-  if (Users.length > 0) {
+  if (users.length > 0) {
     res.status(200).json({
-      Users,
+      users,
       message: "Get all Users successfully",
     });
   } else {
     res.status(404).json({
-      Users,
+      users,
       message: "Users data not found",
     });
   }
@@ -108,9 +108,9 @@ export const updateUser = asyncHandler(async (req, res) => {
 
   const { username, email, password, photo } = req.body;
 
-  // if (!title) {
-  //   return res.status(400).json({ message: "User name is required" });
-  // }
+  if (!username) {
+    return res.status(400).json({ message: "User name is required" });
+  }
 
   const user = await User.findByIdAndUpdate(
     id,

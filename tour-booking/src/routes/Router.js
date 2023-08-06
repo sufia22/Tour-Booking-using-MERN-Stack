@@ -6,11 +6,13 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import SearchResultList from "../pages/SearchResultList";
 import ThankYou from "../pages/ThankYou";
+import About from "../pages/About";
 
 const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
       <Route path="/tour" element={<Tours />} />
       <Route path="/tour/:id" element={<TourDetails />} />
       <Route path="/login" element={<Login />} />

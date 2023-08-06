@@ -2,18 +2,26 @@ import "../styles/TourDetails.scss";
 import { useParams } from "react-router-dom";
 import { Col, Container, Form, ListGroup, Row } from "reactstrap";
 import avatar from "../assets/images/avatar.jpg";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Booking from "../components/Booking/Booking";
 import useFetch from "../hooks/useFetch";
 import { BASE_URL } from "../utils/config";
+import { AuthContext } from "../context/AuthContext";
+import swal from "sweetalert";
+import axios from "axios";
 
 const TourDetails = () => {
   const { id } = useParams();
   const reviewMsgRef = useRef();
   const [tourRating, setTourRating] = useState(null);
+  const { user } = useContext(AuthContext);
 
   const { data: tour } = useFetch(`${BASE_URL}/tour/${id}`);
-  console.log(tour.tour);
+
+  // Make sure tour.tour is not null or undefined
+  if (!tour || !tour.tour) {
+    return <div>No tour data available.</div>;
+  }
 
   const {
     photo,
@@ -21,11 +29,11 @@ const TourDetails = () => {
     desc,
     price,
     address,
-    reviews = [],
+    reviews,
     city,
     distance,
     maxGroupSize,
-  } = tour;
+  } = tour.tour;
 
   const totalRating = reviews?.reduce((acc, item) => acc + item.rating, 0);
   const avgRating =
@@ -36,18 +44,55 @@ const TourDetails = () => {
       : totalRating / reviews?.length;
 
   // format data
-  const options = { day: "numeric", month: "long", year: "numeric" };
+  const options = { month: "long", day: "numeric", year: "numeric" };
 
   // submit request to server
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     const reviewText = reviewMsgRef.current.value;
-    alert(`${reviewText}, ${tourRating}`);
+
+    if (!user || user === undefined || user === null) {
+      swal("Please sign in");
+    } else {
+      const reviewObject = {
+        username: user?.user?.username,
+        reviewText,
+        rating: tourRating,
+      };
+
+      try {
+        const reviewObject = {
+          username: user?.user?.username,
+          reviewText,
+          rating: tourRating,
+        };
+
+        const response = await axios
+          .post(`http://localhost:5050/api/v1/review/${id}`, reviewObject)
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+
+        // await axios
+        //   .get(`${BASE_URL}/tour/`)
+        //   .then((res) => {
+        //     console.log(res.data);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err.message);
+        //   });
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
   };
 
-  useEffect(() => {
-    window.scroll(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [tour.tour]);
 
   return (
     <section>
@@ -143,29 +188,31 @@ const TourDetails = () => {
                 </Form>
 
                 <ListGroup className="user-reviews">
-                  {reviews?.map((review) => (
-                    <div className="review-item">
-                      <img src={avatar} alt="" />
+                  {reviews?.map((review, index) => {
+                    return (
+                      <div className="review-item" key={index}>
+                        <img src={avatar} alt="" />
 
-                      <div className="w-100">
-                        <div className="d-flex align-items-center justify-content-between">
-                          <div>
-                            <h5>Sufia</h5>
-                            <p>
-                              {new Date("01-08-2023").toLocaleDateString(
-                                "en-US",
-                                options
-                              )}
-                            </p>
+                        <div className="w-100">
+                          <div className="d-flex align-items-center justify-content-between">
+                            <div>
+                              <h5>{review.username}</h5>
+                              <p>
+                                {new Date(review.createdAt).toLocaleDateString(
+                                  "en-US",
+                                  options
+                                )}
+                              </p>
+                            </div>
+                            <span className="d-flex align-items-center">
+                              {review.rating} <i className="ri-star-s-fill"></i>
+                            </span>
                           </div>
-                          <span className="d-flex align-items-center">
-                            5 <i className="ri-star-s-fill"></i>
-                          </span>
+                          <h6>{review.reviewText}</h6>
                         </div>
-                        <h6>Amazing tour</h6>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </ListGroup>
               </div>
             </div>

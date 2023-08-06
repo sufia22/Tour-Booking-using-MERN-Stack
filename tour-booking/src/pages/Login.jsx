@@ -2,14 +2,20 @@ import "../styles/Login.scss";
 import loginImg from "../assets/images/login.png";
 import userIcon from "../assets/images/user.png";
 import { Button, Col, Container, Form, FormGroup, Row } from "reactstrap";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { BASE_URL } from "../utils/config";
+import axios from "axios";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // handle input change
   const handleChange = (e) => {
@@ -20,8 +26,21 @@ const Login = () => {
   };
 
   // handle submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await axios
+        .post(`${BASE_URL}/auth/login`, credentials)
+        .then((res) => {
+          dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } catch (error) {
+      dispatch({ type: "LOGIN_Failure", payload: error.message });
+    }
   };
 
   return (

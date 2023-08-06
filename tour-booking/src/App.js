@@ -5,7 +5,11 @@ import Layout from "./components/Layout/Layout";
 function App() {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+      />
       <Layout />
     </>
   );

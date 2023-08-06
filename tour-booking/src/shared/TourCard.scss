@@ -95,3 +95,23 @@
     }
   }
 }
+
+// responsive
+@media only screen and (max-width: 576px) {
+  .tour-title {
+    font-size: 5rem;
+  }
+
+  .booking-btn {
+    padding: 0.2rem 0.5rem !important;
+
+    a {
+      font-size: 0.8rem;
+    }
+  }
+
+  .tour-location,
+  .tour-rating {
+    font-size: 0.8rem;
+  }
+}

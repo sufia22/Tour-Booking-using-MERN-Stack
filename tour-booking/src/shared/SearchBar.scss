@@ -40,3 +40,73 @@
     cursor: pointer;
   }
 }
+
+/* responsive */
+@media only screen and (max-width: 992px) {
+  .search__bar {
+    width: 100%;
+
+    form {
+      display: flex;
+      justify-content: space-between;
+
+      .form-group {
+        width: 25%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .search__bar {
+    width: 100%;
+
+    form {
+      flex-wrap: wrap;
+      padding: 10px 10px;
+      .form-group {
+        width: 25%;
+        border: none;
+
+        input {
+          font-size: 0.7rem;
+        }
+
+        span i {
+          font-size: 1.1rem;
+        }
+
+        h6 {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 567px) {
+  .search__bar {
+    width: 100%;
+
+    form {
+      flex-wrap: wrap;
+      padding: 10px 10px;
+      .form-group {
+        width: 100%;
+        border: none;
+
+        input {
+          font-size: 0.7rem;
+        }
+
+        span i {
+          font-size: 1.1rem;
+        }
+
+        h6 {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

@@ -12,11 +12,6 @@ import User from "../models/User.js";
 export const register = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
 
-  // validate data
-  if (!username || !email || !password) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
   // check email
   const emailCheck = await User.findOne({ email });
 
@@ -90,7 +85,6 @@ export const login = asyncHandler(async (req, res) => {
     })
     .status(200)
     .json({
-      token,
       user: loginUser,
       role: loginUser.role,
     });

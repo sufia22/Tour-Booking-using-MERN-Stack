@@ -9,10 +9,13 @@ import asyncHandler from "express-async-handler";
  */
 export const getAllTours = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page);
-  const tours = await Tour.find().populate("reviews");
+  const tours = await Tour.find({})
+    .populate("reviews")
+    .skip(page * 8)
+    .limit(8);
 
   if (tours) {
-    res.status(200).json({
+    res.status(201).json({
       tours,
       message: "Get all tours successfully",
     });
@@ -35,14 +38,13 @@ export const getSingleTour = asyncHandler(async (req, res) => {
 
   const tour = await Tour.findById(id).populate("reviews");
 
-  if (!tour) {
-    return res.status(404).json({ message: "Tour data not found" });
+  if (tour) {
+    return res.status(200).json({
+      tour,
+      message: "Single tour get sucessfully",
+    });
   }
-
-  res.status(200).json({
-    tour,
-    message: "Tour data not found",
-  });
+  return res.status(404).json({ message: "Tour data not found" });
 });
 
 /**
@@ -197,8 +199,8 @@ export const getTourBySearch = asyncHandler(async (req, res) => {
  */
 export const getFeaturedTours = asyncHandler(async (req, res) => {
   const tours = await Tour.find({ featured: true })
-    .limit(8)
-    .populate("reviews");
+    .populate("reviews")
+    .limit(8);
 
   if (tours.length > 0) {
     res.status(200).json({

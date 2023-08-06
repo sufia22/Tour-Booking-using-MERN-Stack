@@ -45,7 +45,7 @@ const Home = () => {
               </div>
             </Col>
             <Col lg="2">
-              <div className="hero__imgbox mt-4">
+              <div className="hero__imgbox hero-video-box mt-4">
                 <video src={heroVideo} alt="" controls />
               </div>
             </Col>
@@ -88,6 +88,7 @@ const Home = () => {
           </Row>
         </Container>
       </section>
+
       {/* ------ feature tour section end ------ */}
 
       {/* ------ experience section start ------ */}

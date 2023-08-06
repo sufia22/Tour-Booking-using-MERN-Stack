@@ -71,3 +71,29 @@
     }
   }
 }
+
+// responsive
+@media only screen and (max-width: 768px) {
+  .login-Img {
+    display: none;
+  }
+
+  .login-form {
+    margin: auto;
+    width: 70% !important;
+  }
+
+  .login-container {
+    padding-bottom: 3rem !important;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .login-form {
+    width: 100% !important;
+  }
+
+  .login-container {
+    padding-bottom: 0rem !important;
+  }
+}

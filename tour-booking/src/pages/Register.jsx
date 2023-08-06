@@ -2,15 +2,21 @@ import "../styles/Login.scss";
 import registerImg from "../assets/images/register.png";
 import userIcon from "../assets/images/user.png";
 import { Button, Col, Container, Form, FormGroup, Row } from "reactstrap";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
+import { BASE_URL } from "../utils/config";
 
 const Register = () => {
   const [credentials, setCredentials] = useState({
-    userName: "",
+    username: "",
     email: "",
     password: "",
   });
+
+  const { dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // handle input change
   const handleChange = (e) => {
@@ -21,8 +27,23 @@ const Register = () => {
   };
 
   // handle submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      await axios
+        .post(`${BASE_URL}/auth/register`, credentials)
+        .then((res) => {
+          dispatch({ type: "REGISTER_SUCCESS" });
+          navigate("/login");
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -47,7 +68,7 @@ const Register = () => {
                       type="text"
                       placeholder="Username"
                       required
-                      id="userName"
+                      id="username"
                       onChange={handleChange}
                     />
                   </FormGroup>
