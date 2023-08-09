@@ -89,7 +89,7 @@ export const createTour = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Tour already exists" });
   }
 
-  // create new permission
+  // create new tour
   const tour = await Tour.create({
     title,
     city,

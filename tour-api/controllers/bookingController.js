@@ -9,6 +9,7 @@ import Booking from "../models/Booking.js";
  */
 export const createBooking = asyncHandler(async (req, res) => {
   const newBooking = new Booking(req.body);
+  console.log(newBooking);
 
   const savedBooking = await newBooking.save();
 
@@ -51,7 +52,7 @@ export const getAllBooking = asyncHandler(async (req, res) => {
  * @method GET
  * @access public
  */
-export const getBooking = asyncHandler(async (req, res) => {
+export const getSingleBooking = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   const booking = await Booking.findById(id);

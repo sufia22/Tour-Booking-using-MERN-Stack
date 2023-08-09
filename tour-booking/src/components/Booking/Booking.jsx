@@ -38,15 +38,13 @@ const Booking = ({ tour, avgRating }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(booking);
-
     try {
-      if (!user || user === undefined || user === null) {
-        swal("Please sign in");
-      }
+      // if (!user || user === undefined || user === null) {
+      //   swal("Please sign in");
+      // }
 
       await axios
-        .post(`${BASE_URL}/booking`, booking)
+        .get(`${BASE_URL}/booking`)
         .then((res) => {
           navigate("/thank-you");
         })

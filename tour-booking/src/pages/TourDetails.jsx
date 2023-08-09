@@ -53,40 +53,34 @@ const TourDetails = () => {
 
     if (!user || user === undefined || user === null) {
       swal("Please sign in");
-    } else {
+    }
+
+    try {
       const reviewObject = {
         username: user?.user?.username,
         reviewText,
         rating: tourRating,
       };
 
-      try {
-        const reviewObject = {
-          username: user?.user?.username,
-          reviewText,
-          rating: tourRating,
-        };
+      const response = await axios
+        .post(`http://localhost:5050/api/v1/review/${id}`, reviewObject)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
 
-        const response = await axios
-          .post(`http://localhost:5050/api/v1/review/${id}`, reviewObject)
-          .then((res) => {
-            console.log(res.data);
-          })
-          .catch((err) => {
-            console.log(err.message);
-          });
-
-        // await axios
-        //   .get(`${BASE_URL}/tour/`)
-        //   .then((res) => {
-        //     console.log(res.data);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err.message);
-        //   });
-      } catch (error) {
-        console.log(error.message);
-      }
+      // await axios
+      //   .get(`${BASE_URL}/tour/`)
+      //   .then((res) => {
+      //     console.log(res.data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.message);
+      //   });
+    } catch (error) {
+      console.log(error.message);
     }
   };
 

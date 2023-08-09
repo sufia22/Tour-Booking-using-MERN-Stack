@@ -6,7 +6,7 @@ import { verifyUser } from "../middlewares/tokenVerify.js";
 const router = express.Router();
 
 // routes
-router.route("/:tourID").post(verifyUser, createReview);
+router.route("/:tourID").post(createReview);
 
 // export default router
 export default router;

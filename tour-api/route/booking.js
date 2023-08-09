@@ -3,18 +3,15 @@ import { verifyAdmin, verifyUser } from "../middlewares/tokenVerify.js";
 import {
   createBooking,
   getAllBooking,
-  getBooking,
+  getSingleBooking,
 } from "../controllers/bookingController.js";
 
 // init router
 const router = express.Router();
 
 // routes
-router
-  .route("/")
-  .get(verifyAdmin, getAllBooking)
-  .post(verifyUser, createBooking);
-router.route("/:id").get(getBooking);
+router.route("/").get(getAllBooking).post(createBooking);
+router.route("/:id").get(getSingleBooking);
 
 // export default router
 export default router;

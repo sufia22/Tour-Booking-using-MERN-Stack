@@ -91,7 +91,7 @@ const Header = () => {
                   {user ? (
                     <>
                       <div className="user-box">
-                        <h5 className="mb-0">{user.user.username}</h5>
+                        <h5 className="mb-0">{user?.user?.username}</h5>
                         <button className="btn btn-dark" onClick={logout}>
                           Logout
                         </button>
